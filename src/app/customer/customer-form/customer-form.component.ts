@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Customer } from '../shared/customer.model';
-import { CustomerService } from '../shared/customer.service';
+import { CustomerService } from '../shared/services/customer/customer.service';
 
 @Component({
   selector: 'app-customer-form',
