@@ -1,0 +1,40 @@
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-12">
+    <div class="row" style="margin-top: 15px;">
+      <div class="col-md-11">
+        <div class="form-group">
+          <h3 for="name">Name</h3>
+          <p>{{customer.name}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-11">
+        <div class="form-group">
+          <h3 for="imagePath">Image URL </h3>
+          <p>{{customer.avatar}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-11">
+        <img src="{{customer.avatar}}" class="img-responsive">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-11">
+        <div class="form-group">
+          <h3 for="description">Description</h3>
+          <p>{{customer.description}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-11">
+        <button class="btn btn-success" type="button" [routerLink]="['edit']"
+          [queryParams]="{id: customer.id}">Edit</button>
+        <button class="btn btn-danger" type="button" style="margin-left: 20px;" (click)="deleteCustomer()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

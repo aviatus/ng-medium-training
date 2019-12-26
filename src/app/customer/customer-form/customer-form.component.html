@@ -1,0 +1,42 @@
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-12">
+    <form #form="ngForm" (ngSubmit)="onSubmit()">
+      <div class="row" style="margin-top: 15px;">
+        <div class="col-md-11">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input class="form-control" type="text" [(ngModel)]="customer.name" name="name" required>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-11">
+          <div class="form-group">
+            <label for="imagePath">Image URL </label>
+            <input class="form-control" type="text" [(ngModel)]="customer.avatar" name="avatarUrl">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-11">
+          <img src="{{customer.avatar}}" class="img-responsive">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-11">
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" type="text" rows="6" [(ngModel)]="customer.description" name="description"
+              required></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-11">
+          <button class="btn btn-success" type="submit">Save</button>
+          <button class="btn btn-danger" type="button" style="margin-left: 20px;" routerLink="/">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
