@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Customer } from '../shared/customer.model';
-import { CustomerService } from '../shared/customer.service';
+import { CustomerService } from '../shared/services/customer/customer.service';
 
 @Component({
   selector: 'app-customer-list',
@@ -22,7 +22,6 @@ export class CustomerListComponent implements OnInit {
 
   deleteCustomer(id: string) {
     this.customerService.deleteCustomer(id).subscribe(() => {
-      console.log('successful delete');
       this.customers = this.customers.filter(customer => customer.id !== id);
       this.selectedCustomer = undefined;
     });

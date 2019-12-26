@@ -9,7 +9,7 @@ import { CustomerDetailComponent } from './customer/customer-detail/customer-det
 import { CustomerFormComponent } from './customer/customer-form/customer-form.component';
 import { CustomerListComponent } from './customer/customer-list/customer-list.component';
 import { CustomerComponent } from './customer/customer.component';
-import { CustomerService } from './customer/shared/customer.service';
+import { CustomerService } from './customer/shared/services/customer/customer.service';
 
 @NgModule({
   declarations: [
