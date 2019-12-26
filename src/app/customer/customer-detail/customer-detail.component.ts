@@ -7,9 +7,12 @@ import { Customer } from '../shared/customer.model';
   templateUrl: './customer-detail.component.html',
   styleUrls: ['./customer-detail.component.scss']
 })
-export class CustomerDetailComponent {
+export class CustomerDetailComponent implements OnInit {
   @Output() delete = new EventEmitter<string>();
-  @Input() customer: Customer;
+  @Input() customer: Customer = new Customer();
+
+  ngOnInit() {
+  }
 
   deleteCustomer() {
     this.delete.emit(this.customer.id);
