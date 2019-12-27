@@ -10,7 +10,7 @@ import { CustomerService } from '../shared/services/customer/customer.service';
 })
 export class CustomerListComponent implements OnInit {
   customers: Customer[];
-  selectedCustomer: Customer;
+  activeCustomer: Customer;
 
   constructor(private customerService: CustomerService) { }
 
@@ -23,7 +23,7 @@ export class CustomerListComponent implements OnInit {
   deleteCustomer(id: string) {
     this.customerService.deleteCustomer(id).subscribe(() => {
       this.customers = this.customers.filter(customer => customer.id !== id);
-      this.selectedCustomer = undefined;
+      this.activeCustomer = undefined;
     });
   }
 }
