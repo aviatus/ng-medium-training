@@ -13,7 +13,9 @@ export class CustomerFormComponent implements OnInit {
   customer: Customer = { id: '', createdAt: '', name: '', avatar: '', description: '' };
   id: string;
 
-  constructor(private route: ActivatedRoute, private customerService: CustomerService, private router: Router) { }
+  constructor(private route: ActivatedRoute,
+              private customerService: CustomerService,
+              private router: Router) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
