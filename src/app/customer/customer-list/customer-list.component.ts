@@ -1,7 +1,12 @@
+import { Observable } from 'rxjs';
+
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
 
 import { Customer } from '../shared/customer.model';
-import { CustomerService } from '../shared/services/customer/customer.service';
+import * as customerActions from '../state/customer.actions';
+import * as fromCustomer from '../state/index';
 
 @Component({
   selector: 'app-customer-list',
@@ -9,21 +14,23 @@ import { CustomerService } from '../shared/services/customer/customer.service';
   styleUrls: ['./customer-list.component.scss']
 })
 export class CustomerListComponent implements OnInit {
-  customers: Customer[];
+  customers$: Observable<Customer[]>;
   activeCustomer: Customer;
 
-  constructor(private customerService: CustomerService) { }
+  constructor(private store: Store<fromCustomer.State>, private router: Router) { }
 
   ngOnInit() {
-    this.customerService.getCustomers().subscribe((customers: Customer[]) => {
-      this.customers = customers;
-    });
+    this.store.dispatch(new customerActions.Load());
+    this.customers$ = this.store.pipe(select(fromCustomer.getCustomer));
+    this.store.pipe(select(fromCustomer.getCurrentCustomer)).subscribe((customer) => this.activeCustomer = customer);
   }
 
-  deleteCustomer(id: string) {
-    this.customerService.deleteCustomer(id).subscribe(() => {
-      this.customers = this.customers.filter(customer => customer.id !== id);
-      this.activeCustomer = undefined;
-    });
+  setActiveCustomer(customer: Customer) {
+    this.store.dispatch(new customerActions.SetCurrentCustomer(customer));
+  }
+
+  createCustomer() {
+    this.store.dispatch(new customerActions.ClearCurrentCustomer());
+    this.router.navigate(['customer/new']);
   }
 }

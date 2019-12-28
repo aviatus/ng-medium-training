@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
 
 import { Customer } from '../shared/customer.model';
 import { CustomerService } from '../shared/services/customer/customer.service';
+import * as customerActions from '../state/customer.actions';
+import * as fromCustomer from '../state/index';
 
 @Component({
   selector: 'app-customer-form',
@@ -10,29 +13,29 @@ import { CustomerService } from '../shared/services/customer/customer.service';
   styleUrls: ['./customer-form.component.scss']
 })
 export class CustomerFormComponent implements OnInit {
-  customer: Customer = { id: '', createdAt: '', name: '', avatar: '', description: '' };
-  id: string;
+  customer: Customer = new Customer();
 
-  constructor(private route: ActivatedRoute,
-              private customerService: CustomerService,
-              private router: Router) { }
+  constructor(private router: Router,
+              private store: Store<fromCustomer.State>) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.id = params.id;
-      if (this.id) {
-        this.getCustomer();
+    this.getCustomer();
+  }
+
+  getCustomer() {
+    this.store.pipe(select(fromCustomer.getCurrentCustomer)).subscribe((customer) => {
+      if (customer) {
+        this.customer = customer;
       }
     });
   }
 
-  getCustomer() {
-    this.customerService.getCustomer(this.id).subscribe((customer: Customer) => {
-      this.customer = customer;
-    });
-  }
-
   onSubmit() {
-    this.customerService.updateCustomer(this.customer).subscribe(() => this.router.navigate(['/']));
+    if (this.customer.id) {
+      this.store.dispatch(new customerActions.UpdateCustomer(this.customer));
+    } else {
+      this.store.dispatch(new customerActions.CreateCustomer(this.customer));
+    }
+    this.router.navigate(['/']);
   }
 }

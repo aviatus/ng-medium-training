@@ -11,18 +11,15 @@ export class CustomerService {
 
   constructor(private http: HttpClient) { }
 
-  getCustomer(id: string): Observable<Customer> {
-    return this.http.get<Customer>(this.URL + '/' + id);
-  }
-
   getCustomers(): Observable<Customer[]> {
     return this.http.get<Customer[]>(this.URL);
   }
 
   updateCustomer(customer: Customer): Observable<Customer> {
-    if (customer.id) {
-      return this.http.put<Customer>(this.URL + '/' + customer.id, customer);
-    }
+    return this.http.put<Customer>(this.URL + '/' + customer.id, customer);
+  }
+
+  createCustomer(customer: Customer): Observable<Customer> {
     return this.http.post<Customer>(this.URL + '/', customer);
   }
 

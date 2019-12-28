@@ -1,32 +1,31 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CustomerDetailComponent } from './customer/customer-detail/customer-detail.component';
-import { CustomerFormComponent } from './customer/customer-form/customer-form.component';
-import { CustomerListComponent } from './customer/customer-list/customer-list.component';
-import { CustomerComponent } from './customer/customer.component';
-import { CustomerService } from './customer/shared/services/customer/customer.service';
+import { CustomerModule } from './customer/customer.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CustomerListComponent,
-    CustomerComponent,
-    CustomerFormComponent,
-    CustomerDetailComponent
-  ],
   imports: [
+    BrowserModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    CustomerModule,
+    StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({
+      name: 'Test'
+    }),
+    EffectsModule.forRoot([])
   ],
-  providers: [
-    CustomerService
+  declarations: [
+    AppComponent
   ],
   bootstrap: [AppComponent]
 })

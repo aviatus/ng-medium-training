@@ -1,14 +1,14 @@
-<button class="btn btn-success" style="margin-top: 30px;margin-bottom: 20px;" [routerLink]="['new']">New Recipe</button>
+<button class="btn btn-success" style="margin-top: 30px;margin-bottom: 20px;" (click)="createCustomer()">New
+  Customer</button>
 <div class="row">
   <div class="col-md-8">
-    <div class="card" style="margin-bottom: 10px;" *ngFor="let customer of customers,let i = index" id="{{i}}"
-      (click)="activeCustomer = customer">
-      <div class="card-header">
-        <p>{{customer.name}}</p>
-      </div>
+    <div class="card" style="margin-bottom: 10px;" *ngFor="let customer of customers$ | async,let i = index">
+      <button class="btn" id="{{i}}" [ngClass]="{'btn-info': customer?.id === activeCustomer?.id}"
+        (click)="setActiveCustomer(customer)">{{customer.name}}
+      </button>
     </div>
   </div>
-  <div class="col-md-4" *ngIf="activeCustomer">
-    <app-customer-detail [customer]="activeCustomer" (delete)="deleteCustomer($event)"></app-customer-detail>
+  <div class="col-md-4">
+    <app-customer-detail></app-customer-detail>
   </div>
 </div>
