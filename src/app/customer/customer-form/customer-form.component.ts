@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 
 import { Customer } from '../shared/customer.model';
-import { CustomerService } from '../shared/services/customer/customer.service';
-import * as customerActions from '../state/customer.actions';
+import * as customerActions from '../state/actions/customer.actions';
 import * as fromCustomer from '../state/index';
 
 @Component({
@@ -36,6 +35,11 @@ export class CustomerFormComponent implements OnInit {
     } else {
       this.store.dispatch(new customerActions.CreateCustomer(this.customer));
     }
+    this.router.navigate(['/']);
+  }
+
+  goBack() {
+    this.store.dispatch(new customerActions.ClearCurrentCustomer());
     this.router.navigate(['/']);
   }
 }

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 
 import { Customer } from '../shared/customer.model';
-import * as customerActions from '../state/customer.actions';
+import * as customerActions from '../state/actions/customer.actions';
 import * as fromCustomer from '../state/index';
 
 @Component({
@@ -21,7 +21,7 @@ export class CustomerListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new customerActions.Load());
-    this.customers$ = this.store.pipe(select(fromCustomer.getCustomer));
+    this.customers$ = this.store.pipe(select(fromCustomer.getCustomers));
     this.store.pipe(select(fromCustomer.getCurrentCustomer)).subscribe((customer) => this.activeCustomer = customer);
   }
 
@@ -32,5 +32,9 @@ export class CustomerListComponent implements OnInit {
   createCustomer() {
     this.store.dispatch(new customerActions.ClearCurrentCustomer());
     this.router.navigate(['customer/new']);
+  }
+
+  deleteCustomer(customer: Customer) {
+    this.store.dispatch(new customerActions.DeleteCustomer(customer));
   }
 }

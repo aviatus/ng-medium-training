@@ -9,6 +9,6 @@
     </div>
   </div>
   <div class="col-md-4">
-    <app-customer-detail></app-customer-detail>
+    <app-customer-detail [customer]="activeCustomer" (deleteUser)="deleteCustomer($event)"></app-customer-detail>
   </div>
 </div>
