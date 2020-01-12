@@ -1,7 +1,7 @@
 /* NgRx */
 import { Action } from '@ngrx/store';
 
-import { Customer } from '../shared/customer.model';
+import { Customer } from '../../shared/customer.model';
 
 export enum CustomerActionTypes {
   ToggleCustomerCode = '[Customer] Toggle Customer Code',
@@ -49,24 +49,6 @@ export class LoadFail implements Action {
   constructor(public payload: string) { }
 }
 
-export class UpdateCustomer implements Action {
-  readonly type = CustomerActionTypes.UpdateCustomer;
-
-  constructor(public payload: Customer) { }
-}
-
-export class UpdateCustomerSuccess implements Action {
-  readonly type = CustomerActionTypes.UpdateCustomerSuccess;
-
-  constructor(public payload: Customer) { }
-}
-
-export class UpdateCustomerFail implements Action {
-  readonly type = CustomerActionTypes.UpdateCustomerFail;
-
-  constructor(public payload: string) { }
-}
-
 export class CreateCustomer implements Action {
   readonly type = CustomerActionTypes.CreateCustomer;
 
@@ -85,16 +67,34 @@ export class CreateCustomerFail implements Action {
   constructor(public payload: string) { }
 }
 
+export class UpdateCustomer implements Action {
+  readonly type = CustomerActionTypes.UpdateCustomer;
+
+  constructor(public payload: Customer) { }
+}
+
+export class UpdateCustomerSuccess implements Action {
+  readonly type = CustomerActionTypes.UpdateCustomerSuccess;
+
+  constructor(public payload: Customer) { }
+}
+
+export class UpdateCustomerFail implements Action {
+  readonly type = CustomerActionTypes.UpdateCustomerFail;
+
+  constructor(public payload: string) { }
+}
+
 export class DeleteCustomer implements Action {
   readonly type = CustomerActionTypes.DeleteCustomer;
 
-  constructor(public payload: string) { }
+  constructor(public payload: Customer) { }
 }
 
 export class DeleteCustomerSuccess implements Action {
   readonly type = CustomerActionTypes.DeleteCustomerSuccess;
 
-  constructor(public payload: string) { }
+  constructor(public payload: Customer) { }
 }
 
 export class DeleteCustomerFail implements Action {

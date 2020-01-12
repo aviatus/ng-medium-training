@@ -1,36 +1,27 @@
-import { Customer } from '../shared/customer.model';
-import { CustomerActions, CustomerActionTypes } from './customer.actions';
+import { Customer } from '../../shared/customer.model';
+import { CustomerActions, CustomerActionTypes } from '../actions/customer.actions';
 
 export interface CustomerState {
   currentCustomerId: string | null;
   customers: Customer[];
+  hasLoaded: boolean;
   error: string;
 }
 
-const intialState: CustomerState = {
+export const initialState: CustomerState = {
   currentCustomerId: null,
   customers: [],
+  hasLoaded: false,
   error: ''
 };
 
-export function reducer(state = intialState, action: CustomerActions): CustomerState {
+export function reducer(state = initialState, action: CustomerActions): CustomerState {
   switch (action.type) {
-    case CustomerActionTypes.SetCurrentCustomer:
-      return {
-        ...state,
-        currentCustomerId: action.payload.id
-      };
-
-    case CustomerActionTypes.ClearCurrentCustomer:
-      return {
-        ...state,
-        currentCustomerId: null
-      };
-
     case CustomerActionTypes.LoadSuccess:
       return {
         ...state,
         customers: action.payload,
+        hasLoaded: true,
         error: ''
       };
 
@@ -38,6 +29,7 @@ export function reducer(state = intialState, action: CustomerActions): CustomerS
       return {
         ...state,
         customers: [],
+        hasLoaded: false,
         error: action.payload
       };
 
@@ -75,7 +67,7 @@ export function reducer(state = intialState, action: CustomerActions): CustomerS
     case CustomerActionTypes.DeleteCustomerSuccess:
       return {
         ...state,
-        customers: state.customers.filter(customer => customer.id !== action.payload),
+        customers: state.customers.filter(customer => customer.id !== action.payload.id),
         currentCustomerId: null,
         error: ''
       };
@@ -84,6 +76,18 @@ export function reducer(state = intialState, action: CustomerActions): CustomerS
       return {
         ...state,
         error: action.payload
+      };
+
+    case CustomerActionTypes.SetCurrentCustomer:
+      return {
+        ...state,
+        currentCustomerId: action.payload.id
+      };
+
+    case CustomerActionTypes.ClearCurrentCustomer:
+      return {
+        ...state,
+        currentCustomerId: null
       };
 
     default:

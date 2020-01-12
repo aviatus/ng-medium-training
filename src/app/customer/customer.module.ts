@@ -11,8 +11,8 @@ import { CustomerFormComponent } from './customer-form/customer-form.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { CustomerComponent } from './customer.component';
 import { CustomerService } from './shared/services/customer/customer.service';
-import { CustomerEffects } from './state/customer.effects';
-import { reducer } from './state/customer.reducer';
+import { CustomerEffects } from './state/effects/customer.effects';
+import { reducer } from './state/reducers/customer.reducer';
 
 const routes: Routes = [
   { path: '', component: CustomerListComponent }

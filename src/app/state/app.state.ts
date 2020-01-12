@@ -1,4 +1,4 @@
-import { CustomerState } from '../customer/state/customer.reducer';
+import { CustomerState } from '../customer/state/reducers/customer.reducer';
 
 // Representation of the entire app state
 // Extended by lazy loaded modules
