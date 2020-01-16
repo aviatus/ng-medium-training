@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Update } from '@ngrx/entity';
 import { select, Store } from '@ngrx/store';
 
 import { Customer } from '../shared/customer.model';
@@ -15,7 +16,7 @@ export class CustomerFormComponent implements OnInit {
   customer: Customer = new Customer();
 
   constructor(private router: Router,
-              private store: Store<fromCustomer.State>) { }
+              private store: Store<fromCustomer.CustomerState>) { }
 
   ngOnInit() {
     this.getCustomer();
@@ -31,15 +32,15 @@ export class CustomerFormComponent implements OnInit {
 
   onSubmit() {
     if (this.customer.id) {
-      this.store.dispatch(new customerActions.UpdateCustomer(this.customer));
+      this.store.dispatch(customerActions.UpdateCustomer({update: this.customer}));
     } else {
-      this.store.dispatch(new customerActions.CreateCustomer(this.customer));
+      this.store.dispatch(customerActions.CreateCustomer({ create: this.customer }));
     }
     this.router.navigate(['/']);
   }
 
   goBack() {
-    this.store.dispatch(new customerActions.ClearCurrentCustomer());
+    this.store.dispatch(customerActions.ClearCurrentCustomer());
     this.router.navigate(['/']);
   }
 }

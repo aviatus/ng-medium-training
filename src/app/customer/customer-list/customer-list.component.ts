@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 
 import { Customer } from '../shared/customer.model';
-import * as customerActions from '../state/actions/customer.actions';
 import * as fromCustomer from '../state/index';
 
 @Component({
@@ -15,26 +14,26 @@ import * as fromCustomer from '../state/index';
 })
 export class CustomerListComponent implements OnInit {
   customers$: Observable<Customer[]>;
-  activeCustomer: Customer;
+  activeCustomer$: Observable<Customer>;
 
-  constructor(private store: Store<fromCustomer.State>, private router: Router) { }
+  constructor(private store: Store<fromCustomer.CustomerState>, private router: Router) { }
 
   ngOnInit() {
-    this.store.dispatch(new customerActions.Load());
-    this.customers$ = this.store.pipe(select(fromCustomer.getCustomers));
-    this.store.pipe(select(fromCustomer.getCurrentCustomer)).subscribe((customer) => this.activeCustomer = customer);
+    this.store.dispatch(fromCustomer.Load());
+    this.customers$ = this.store.pipe(select(fromCustomer.selectAllCustomers));
+    this.activeCustomer$ = this.store.pipe(select(fromCustomer.getCurrentCustomer));
   }
 
   setActiveCustomer(customer: Customer) {
-    this.store.dispatch(new customerActions.SetCurrentCustomer(customer));
+    this.store.dispatch(fromCustomer.SetCurrentCustomer({customer}));
   }
 
   createCustomer() {
-    this.store.dispatch(new customerActions.ClearCurrentCustomer());
+    this.store.dispatch(fromCustomer.ClearCurrentCustomer());
     this.router.navigate(['customer/new']);
   }
 
   deleteCustomer(customer: Customer) {
-    this.store.dispatch(new customerActions.DeleteCustomer(customer));
+    this.store.dispatch(fromCustomer.DeleteCustomer({delete: customer}));
   }
 }
