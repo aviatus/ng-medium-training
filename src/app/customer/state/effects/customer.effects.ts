@@ -9,58 +9,53 @@ import { Customer } from '../../shared/customer.model';
 import { CustomerService } from '../../shared/services/customer/customer.service';
 import * as fromCustomer from '../../state/index';
 import * as customerActions from '../actions/customer.actions';
-import { getHasLoaded } from '../selectors/customer.selectors';
+
+// import { getHasLoaded } from '../selectors/customer.selectors';
 
 @Injectable()
 export class CustomerEffects {
 
   constructor(private customerService: CustomerService,
               private actions$: Actions,
-              private store: Store<fromCustomer.State>) { }
+              private store: Store<fromCustomer.CustomerState>) { }
 
   @Effect()
   loadCustomers$: Observable<Action> = this.actions$.pipe(
-    ofType(customerActions.CustomerActionTypes.Load),
-    withLatestFrom(this.store.pipe(select(getHasLoaded))),
+    ofType(customerActions.Load),
+    withLatestFrom(this.store.pipe(select(fromCustomer.getHasLoaded))),
     filter(([action, hasLoaded]) => !hasLoaded),
     switchMap((action) => this.customerService.getCustomers().pipe(
-      map(products => (new customerActions.LoadSuccess(products))),
-      catchError(err => of(new customerActions.LoadFail(err)))
+      map(customers => customerActions.LoadSuccess({ customers }))
     )
     )
   );
 
   @Effect()
   updateCustomer$: Observable<Action> = this.actions$.pipe(
-    ofType(customerActions.CustomerActionTypes.UpdateCustomer),
-    switchMap((customer: customerActions.UpdateCustomer) =>
-      this.customerService.updateCustomer(customer.payload).pipe(
-        map(updatedProduct => (new customerActions.UpdateCustomerSuccess(updatedProduct))),
-        catchError(err => of(new customerActions.UpdateCustomerFail(err)))
+    ofType(customerActions.UpdateCustomer),
+    switchMap((state) =>
+      this.customerService.updateCustomer(state.update).pipe(
+        map(updatedProduct => (customerActions.UpdateCustomerSuccess({ update: { id: updatedProduct.id, changes: updatedProduct } }))),
       )
     )
   );
 
   @Effect()
   createCustomer$: Observable<Action> = this.actions$.pipe(
-    ofType(customerActions.CustomerActionTypes.CreateCustomer),
-    switchMap((customer: customerActions.CreateCustomer) =>
-      this.customerService.createCustomer(customer.payload).pipe(
-        map(newProduct => (new customerActions.CreateCustomerSuccess(newProduct))),
-        catchError(err => of(new customerActions.CreateCustomerFail(err)))
+    ofType(customerActions.CreateCustomer),
+    switchMap((state) =>
+      this.customerService.createCustomer(state.create).pipe(
+        map((customer: Customer) => (customerActions.CreateCustomerSuccess({ create: customer }))),
       )
     )
   );
 
   @Effect()
   deleteCustomer$: Observable<Action> = this.actions$.pipe(
-    ofType(customerActions.CustomerActionTypes.DeleteCustomer),
-    map((action: customerActions.DeleteCustomer) => action.payload),
-    switchMap((customer: Customer) =>
-      this.customerService.deleteCustomer(customer.id).pipe(
-        map(() => (new customerActions.DeleteCustomerSuccess(customer))),
-        catchError(err => of(new customerActions.DeleteCustomerFail(err)))
+    ofType(customerActions.DeleteCustomer),
+    switchMap((state) =>
+      this.customerService.deleteCustomer(state.delete.id).pipe(
+        map((customer: Customer) => customerActions.DeleteCustomerSuccess({ delete: customer }))
       )
-    )
-  );
+    ));
 }

@@ -1,121 +1,15 @@
-/* NgRx */
-import { Action } from '@ngrx/store';
+import { Update } from '@ngrx/entity';
+import { createAction, props } from '@ngrx/store';
 
 import { Customer } from '../../shared/customer.model';
 
-export enum CustomerActionTypes {
-  ToggleCustomerCode = '[Customer] Toggle Customer Code',
-  SetCurrentCustomer = '[Customer] Set Current Customer',
-  ClearCurrentCustomer = '[Customer] Clear Current Customer',
-  GetCurrentCustomer = '[Customer] Get Current Customer',
-  Load = '[Customer] Load',
-  LoadSuccess = '[Customer] Load Success',
-  LoadFail = '[Customer] Load Fail',
-  UpdateCustomer = '[Customer] Update Customer',
-  UpdateCustomerSuccess = '[Customer] Update Customer Success',
-  UpdateCustomerFail = '[Customer] Update Customer Fail',
-  CreateCustomer = '[Customer] Create Customer',
-  CreateCustomerSuccess = '[Customer] Create Customer Success',
-  CreateCustomerFail = '[Customer] Create Customer Fail',
-  DeleteCustomer = '[Customer] Delete Customer',
-  DeleteCustomerSuccess = '[Customer] Delete Customer Success',
-  DeleteCustomerFail = '[Customer] Delete Customer Fail'
-}
-
-// Action Creators
-export class SetCurrentCustomer implements Action {
-  readonly type = CustomerActionTypes.SetCurrentCustomer;
-
-  constructor(public payload: Customer) { }
-}
-
-export class ClearCurrentCustomer implements Action {
-  readonly type = CustomerActionTypes.ClearCurrentCustomer;
-}
-
-export class Load implements Action {
-  readonly type = CustomerActionTypes.Load;
-}
-
-export class LoadSuccess implements Action {
-  readonly type = CustomerActionTypes.LoadSuccess;
-
-  constructor(public payload: Customer[]) { }
-}
-
-export class LoadFail implements Action {
-  readonly type = CustomerActionTypes.LoadFail;
-
-  constructor(public payload: string) { }
-}
-
-export class CreateCustomer implements Action {
-  readonly type = CustomerActionTypes.CreateCustomer;
-
-  constructor(public payload: Customer) { }
-}
-
-export class CreateCustomerSuccess implements Action {
-  readonly type = CustomerActionTypes.CreateCustomerSuccess;
-
-  constructor(public payload: Customer) { }
-}
-
-export class CreateCustomerFail implements Action {
-  readonly type = CustomerActionTypes.CreateCustomerFail;
-
-  constructor(public payload: string) { }
-}
-
-export class UpdateCustomer implements Action {
-  readonly type = CustomerActionTypes.UpdateCustomer;
-
-  constructor(public payload: Customer) { }
-}
-
-export class UpdateCustomerSuccess implements Action {
-  readonly type = CustomerActionTypes.UpdateCustomerSuccess;
-
-  constructor(public payload: Customer) { }
-}
-
-export class UpdateCustomerFail implements Action {
-  readonly type = CustomerActionTypes.UpdateCustomerFail;
-
-  constructor(public payload: string) { }
-}
-
-export class DeleteCustomer implements Action {
-  readonly type = CustomerActionTypes.DeleteCustomer;
-
-  constructor(public payload: Customer) { }
-}
-
-export class DeleteCustomerSuccess implements Action {
-  readonly type = CustomerActionTypes.DeleteCustomerSuccess;
-
-  constructor(public payload: Customer) { }
-}
-
-export class DeleteCustomerFail implements Action {
-  readonly type = CustomerActionTypes.DeleteCustomerFail;
-
-  constructor(public payload: string) { }
-}
-
-// Union the valid types
-export type CustomerActions = SetCurrentCustomer
-  | ClearCurrentCustomer
-  | Load
-  | LoadSuccess
-  | LoadFail
-  | UpdateCustomer
-  | UpdateCustomerSuccess
-  | UpdateCustomerFail
-  | CreateCustomer
-  | CreateCustomerSuccess
-  | CreateCustomerFail
-  | DeleteCustomer
-  | DeleteCustomerSuccess
-  | DeleteCustomerFail;
-
+export const Load = createAction('[Customer] Load');
+export const LoadSuccess = createAction('[Customer] Load Success', props<{ customers: Customer[] }>());
+export const CreateCustomer = createAction('[Customer] Create Customer', props<{ create: Customer }>());
+export const CreateCustomerSuccess = createAction('[Customer] Create Customer Success', props<{ create: Customer }>());
+export const UpdateCustomer = createAction('[Customer] Update Customer', props<{ update: Customer }>());
+export const UpdateCustomerSuccess = createAction('[Customer] Update Customer Success', props<{ update: Update<Customer> }>());
+export const DeleteCustomer = createAction('[Customer] Delete Customer', props<{ delete: Customer }>());
+export const DeleteCustomerSuccess = createAction('[Customer] Delete Customer Success', props<{ delete: Customer }>());
+export const SetCurrentCustomer = createAction('[Customer] Set Current Customer', props<{ customer: Customer }>());
+export const ClearCurrentCustomer = createAction('[Customer] Clear Current Customer');
