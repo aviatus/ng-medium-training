@@ -7,23 +7,22 @@ import { Action, select, Store } from '@ngrx/store';
 
 import { Customer } from '../../shared/customer.model';
 import { CustomerService } from '../../shared/services/customer/customer.service';
-import * as fromCustomer from '../../state/index';
 import * as customerActions from '../actions/customer.actions';
-
-// import { getHasLoaded } from '../selectors/customer.selectors';
+import * as customerReducer from '../reducers/customer.reducer';
+import * as customerSelector from '../selectors/customer.selectors';
 
 @Injectable()
 export class CustomerEffects {
 
   constructor(private customerService: CustomerService,
               private actions$: Actions,
-              private store: Store<fromCustomer.CustomerState>) { }
+              private store: Store<customerReducer.CustomerState>) { }
 
   @Effect()
   loadCustomers$: Observable<Action> = this.actions$.pipe(
     ofType(customerActions.Load),
-    withLatestFrom(this.store.pipe(select(fromCustomer.getHasLoaded))),
-    filter(([action, hasLoaded]) => !hasLoaded),
+    // withLatestFrom(this.store.pipe(select(customerSelector.getHasLoaded))),
+    // filter(([action, hasLoaded]) => !hasLoaded),
     switchMap((action) => this.customerService.getCustomers().pipe(
       map(customers => customerActions.LoadSuccess({ customers }))
     )
@@ -35,7 +34,9 @@ export class CustomerEffects {
     ofType(customerActions.UpdateCustomer),
     switchMap((state) =>
       this.customerService.updateCustomer(state.update).pipe(
-        map(updatedProduct => (customerActions.UpdateCustomerSuccess({ update: { id: updatedProduct.id, changes: updatedProduct } }))),
+        map(updatedProduct => (customerActions.UpdateCustomerSuccess(
+          { update: { id: updatedProduct.id, changes: updatedProduct } }
+        ))),
       )
     )
   );
